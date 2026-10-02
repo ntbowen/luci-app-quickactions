@@ -1568,7 +1568,7 @@ return view.extend({
             var out = r.stdout || '';
             if (r.stderr) out += '\n[stderr]\n' + r.stderr;
             var __failed = (r.code != null && r.code !== 0);
-            if (!out.trim()) out = __failed ? '(no output)' : 'Done.';
+            if (!out.trim()) out = __failed ? _('(no output)') : _('Done.');
             if (__failed) out = '[exit code ' + r.code + ']\n' + out;
             var uid = 'qa-tool-out-' + Date.now();
             var pre = document.createElement('pre');
@@ -1576,7 +1576,7 @@ return view.extend({
             pre.style.cssText = 'text-align:left;white-space:pre-wrap;max-height:70vh;overflow-y:auto;background:#1e1e1e;color:#00ff00;padding:12px;border-radius:6px;font-family:monospace;font-size:0.9em;width:100%;box-sizing:border-box;margin:0;';
             pre.textContent = out;
             ui.addNotification(
-                __failed ? (label + ' \u2014 exit ' + r.code) : (label + ' Done'),
+                __failed ? _('%s — exit %s').format(label, r.code) : _('%s Done').format(label),
                 pre,
                 __failed ? 'warning' : 'info');
             var el = document.getElementById(uid);
@@ -1905,52 +1905,52 @@ return view.extend({
     renderDependencies: function() {
         var self = this;
         var inputRow = E('div', { 'style': 'margin-bottom:10px;' }, [
-            E('label', { 'style': 'display:block;font-size:0.9em;color:#666;margin-bottom:4px;' }, 'Package name (leave blank to list all)'),
-            E('input', { 'id': 'qa-dep-pkg', 'placeholder': 'e.g. luci-app-firewall', 'style': 'width:100%;max-width:400px;padding:6px 10px;border:1px solid #ccc;border-radius:4px;font-size:0.95em;box-sizing:border-box;' })
+            E('label', { 'style': 'display:block;font-size:0.9em;color:#666;margin-bottom:4px;' }, _('Package name (leave blank to list all)')),
+            E('input', { 'id': 'qa-dep-pkg', 'placeholder': _('e.g. luci-app-firewall'), 'style': 'width:100%;max-width:400px;padding:6px 10px;border:1px solid #ccc;border-radius:4px;font-size:0.95em;box-sizing:border-box;' })
         ]);
 
         function runSingle() {
             var pkg = document.getElementById('qa-dep-pkg').value.trim();
-            if (!pkg) { ui.addNotification('Error', 'Enter a package name', 'danger'); return; }
-            if (!/^[a-zA-Z0-9_\-\+\.]+$/.test(pkg)) { ui.addNotification('Error', 'Invalid package name', 'danger'); return; }
-            var cmd = 'if command -v apk >/dev/null 2>&1; then echo "=== apk info --depends ' + pkg + ' ==="; apk info --depends ' + pkg + ' 2>&1 || apk info -R ' + pkg + ' 2>&1; else echo "=== opkg info ' + pkg + ' ==="; opkg info ' + pkg + ' 2>&1 | grep -A50 "^Package:"; fi';
-            ui.addNotification('Running', 'Fetching ' + pkg + ' dependencies...', 'info');
-            self.runCommand(cmd, 'Dependencies: ' + pkg);
+            if (!pkg) { ui.addNotification(_('Error'), _('Enter a package name'), 'danger'); return; }
+            if (!/^[a-zA-Z0-9_\-\+\.]+$/.test(pkg)) { ui.addNotification(_('Error'), _('Invalid package name'), 'danger'); return; }
+            var cmd = 'if command -v apk >/dev/null 2>&1; then echo "=== apk info --depends ' + pkg + ' ==="; out=$(apk info --depends ' + pkg + ' 2>&1); if [ -n "$out" ]; then printf "%s\n" "$out"; elif apk list ' + pkg + ' 2>/dev/null | grep -q .; then echo "Package \'' + pkg + '\' is available but not installed:"; apk list ' + pkg + '; else echo "Package \'' + pkg + '\' is not installed and not in repositories."; echo "Similar names:"; apk list "*' + pkg + '*" 2>/dev/null | head -10; fi; else echo "=== opkg info ' + pkg + ' ==="; opkg info ' + pkg + ' 2>&1 | grep -A50 "^Package:"; fi';
+            ui.addTimeLimitedNotification(_('Running'), _('Fetching %s dependencies...').format(pkg), 8000, 'info');
+            self.runCommand(cmd, _('Dependencies: %s').format(pkg));
         }
 
         var singleBox = E('div', { 'style': 'background:rgba(0,0,0,0.02);border:1px solid rgba(0,0,0,0.06);border-radius:8px;padding:16px;margin-bottom:18px;' }, [
-            E('h3', { 'style': 'margin:0 0 12px 0;font-size:1.05em;' }, 'Package Dependency Inspector'),
-            E('p', { 'style': 'color:#777;font-size:0.9em;margin:0 0 12px 0;' }, 'Auto-detects apk (OpenWrt 25.12+) vs opkg (older). Enter a package name to view its dependencies.'),
+            E('h3', { 'style': 'margin:0 0 12px 0;font-size:1.05em;' }, _('Package Dependency Inspector')),
+            E('p', { 'style': 'color:#777;font-size:0.9em;margin:0 0 12px 0;' }, _('Auto-detects apk (OpenWrt 25.12+) vs opkg (older). Enter a package name to view its dependencies.')),
             inputRow,
-            E('button', { 'class': 'btn cbi-button cbi-button-action important', 'click': runSingle }, 'Show Dependencies')
+            E('button', { 'class': 'btn cbi-button cbi-button-action important', 'click': runSingle }, _('Show Dependencies'))
         ]);
 
         var allBox = E('div', { 'style': 'background:rgba(0,0,0,0.02);border:1px solid rgba(0,0,0,0.06);border-radius:8px;padding:16px;' }, [
-            E('h3', { 'style': 'margin:0 0 12px 0;font-size:1.05em;' }, 'All Installed Packages with Dependencies'),
-            E('p', { 'style': 'color:#777;font-size:0.9em;margin:0 0 12px 0;' }, 'Lists every installed package and its full dependency tree. Output may be large.'),
+            E('h3', { 'style': 'margin:0 0 12px 0;font-size:1.05em;' }, _('All Installed Packages with Dependencies')),
+            E('p', { 'style': 'color:#777;font-size:0.9em;margin:0 0 12px 0;' }, _('Lists every installed package and its full dependency tree. Output may be large.')),
             E('button', { 'class': 'btn cbi-button cbi-button-neutral', 'click': function() {
                 var cmd = 'if command -v apk >/dev/null 2>&1; then apk list --installed -I 2>/dev/null | head -200; echo ""; echo "=== Total installed ==="; apk list -I 2>/dev/null | wc -l; else opkg list-installed; fi';
-                ui.addNotification('Running', 'Listing all packages...', 'info');
-                self.runCommand(cmd, 'All packages');
-            } }, 'List All Packages'),
+                ui.addTimeLimitedNotification(_('Running'), _('Listing all packages...'), 8000, 'info');
+                self.runCommand(cmd, _('All packages'));
+            } }, _('List All Packages')),
             E('button', { 'class': 'btn cbi-button cbi-button-neutral', 'style': 'margin-left:8px;', 'click': function() {
                 var cmd = 'if command -v apk >/dev/null 2>&1; then apk list -I --depends 2>/dev/null | head -300; else awk \'/^Package:/{p=$2} /^Depends:/{print p " -> " $0}\' /usr/lib/opkg/status; fi';
-                ui.addNotification('Running', 'Listing dependencies...', 'info');
-                self.runCommand(cmd, 'Package dependencies');
-            } }, 'List All Dependencies'),
+                ui.addTimeLimitedNotification(_('Running'), _('Listing dependencies...'), 8000, 'info');
+                self.runCommand(cmd, _('Package dependencies'));
+            } }, _('List All Dependencies')),
             E('button', { 'class': 'btn cbi-button cbi-button-neutral', 'style': 'margin-left:8px;', 'click': function() {
                 var cmd = 'if command -v apk >/dev/null 2>&1; then apk info --depends 2>/dev/null | head -200; else opkg status | grep -E "^(Package|Depends):"; fi';
-                ui.addNotification('Running', 'Fetching dependency pairs...', 'info');
-                self.runCommand(cmd, 'Dependency pairs');
-            } }, 'Compact View')
+                ui.addTimeLimitedNotification(_('Running'), _('Fetching dependency pairs...'), 8000, 'info');
+                self.runCommand(cmd, _('Dependency pairs'));
+            } }, _('Compact View'))
         ]);
 
         var totalsBox = E('div', { 'style': 'background:rgba(0,0,0,0.02);border:1px solid rgba(0,0,0,0.06);border-radius:8px;padding:16px;margin-top:18px;' }, [
-            E('h3', { 'style': 'margin:0 0 12px 0;font-size:1.05em;' }, 'System Package Summary'),
+            E('h3', { 'style': 'margin:0 0 12px 0;font-size:1.05em;' }, _('System Package Summary')),
             E('button', { 'class': 'btn cbi-button cbi-button-neutral', 'click': function() {
                 var cmd = 'echo "Package manager:"; command -v apk >/dev/null 2>&1 && echo "apk (OpenWrt 25.12+)" || echo "opkg (OpenWrt <=24.10)"; echo ""; echo "Total installed packages:"; if command -v apk >/dev/null 2>&1; then apk list -I 2>/dev/null | wc -l; else opkg list-installed | wc -l; fi; echo ""; echo "Recent installs:"; if command -v apk >/dev/null 2>&1; then apk list -I 2>/dev/null | tail -20; else opkg list-installed | tail -20; fi';
-                self.runCommand(cmd, 'Package summary');
-            } }, 'System Package Summary')
+                self.runCommand(cmd, _('Package summary'));
+            } }, _('System Package Summary'))
         ]);
 
         return E('div', {}, [singleBox, allBox, totalsBox]);
@@ -1968,37 +1968,37 @@ return view.extend({
             return E('pre', { 'style': 'background:#1e1e1e;color:#00ff00;padding:10px;border-radius:6px;font-family:monospace;font-size:0.85em;overflow-x:auto;margin:8px 0;white-space:pre-wrap;' }, text);
         }
         var runnerBox = E('div', { 'style': 'background:rgba(30,144,255,0.08);border:1px solid rgba(30,144,255,0.2);border-radius:8px;padding:16px;margin-bottom:20px;' }, [
-            E('h3', { 'style': 'margin:0 0 10px 0;' }, 'Direct Command Execution'),
-            E('p', { 'style': 'color:#666;font-size:0.9em;margin:0 0 12px 0;' }, 'Run shell commands as root. Output in notification.'),
-            E('textarea', { 'id': 'qa-cmd-input', 'placeholder': 'e.g. df -h', 'style': 'width:100%;min-height:90px;padding:10px;border:1px solid #ccc;border-radius:4px;font-family:monospace;font-size:0.9em;box-sizing:border-box;' }),
+            E('h3', { 'style': 'margin:0 0 10px 0;' }, _('Direct Command Execution')),
+            E('p', { 'style': 'color:#666;font-size:0.9em;margin:0 0 12px 0;' }, _('Run shell commands as root. Output in notification.')),
+            E('textarea', { 'id': 'qa-cmd-input', 'placeholder': _('e.g. df -h'), 'style': 'width:100%;min-height:90px;padding:10px;border:1px solid #ccc;border-radius:4px;font-family:monospace;font-size:0.9em;box-sizing:border-box;' }),
             E('div', { 'style': 'margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;' }, [
                 E('button', { 'class': 'btn cbi-button cbi-button-action important', 'click': function() {
                     var cmd = document.getElementById('qa-cmd-input').value.trim();
                     if (!cmd) return;
-                    if (!confirm('Run this command?\n\n' + cmd)) return;
-                    ui.addNotification('Running', 'Command executing...', 'info');
-                    self.runCommand(cmd, 'Command');
-                } }, 'Run Command'),
-                E('button', { 'class': 'btn cbi-button', 'click': function() { document.getElementById('qa-cmd-input').value = ''; } }, 'Clear')
+                    if (!confirm(_('Run this command?') + '\n\n' + cmd)) return;
+                    ui.addTimeLimitedNotification(_('Running'), _('Command executing...'), 8000, 'info');
+                    self.runCommand(cmd, _('Command'));
+                } }, _('Run Command')),
+                E('button', { 'class': 'btn cbi-button', 'click': function() { document.getElementById('qa-cmd-input').value = ''; } }, _('Clear'))
             ])
         ]);
         var docs = E('div', {}, [
-            E('h3', { 'style': 'margin:0 0 12px 0;' }, 'OpenWrt Command Reference'),
-            docBox('System Information', E('div', {}, [codeBlock('uname -a\ncat /etc/openwrt_release\ncat /proc/cpuinfo\nfree -h\ndf -h\nuptime')])),
-            docBox('Network Diagnostics', E('div', {}, [codeBlock('ip addr show\nip route show\niwinfo\nping -c 4 8.8.8.8\nnslookup google.com\ntraceroute 8.8.8.8')])),
-            docBox('WiFi Management', E('div', {}, [codeBlock('/sbin/wifi down\n/sbin/wifi up\nwifi status\niwinfo wlan0 scan')])),
-            docBox('Firewall / Routing', E('div', {}, [codeBlock('nft list ruleset\nuci show firewall\nuci show network\nfw4 reload')])),
-            docBox('Package Management', E('div', {}, [codeBlock('opkg update && opkg list-installed\napk update && apk list -I')])),
-            docBox('Service Control', E('div', {}, [codeBlock('/etc/init.d/network restart\nservice <name> enable\nservice <name> disable')])),
-            docBox('Logs and Debugging', E('div', {}, [codeBlock('logread\nlogread -f\ndmesg\nlogread | grep error')])),
-            docBox('UCI Configuration', E('div', {}, [codeBlock('uci show\nuci get network.wan.proto\nuci set network.wan.proto=dhcp\nuci commit network')])),
-            docBox('Process Management', E('div', {}, [codeBlock('ps w\ntop -n 1\nkill <pid>\nlsmod')])),
-            docBox('GPIO / Hardware Buttons', E('div', {}, [codeBlock('ubus call system board\nls /sys/class/gpio/\n/etc/rc.button/reset')])),
-            docBox('Backup and Restore', E('div', {}, [codeBlock('sysupgrade -b /tmp/backup.tar.gz\nsysupgrade -r /tmp/backup.tar.gz\nfirstboot -y')])),
-            docBox('Useful One-Liners', E('div', {}, [
+            E('h3', { 'style': 'margin:0 0 12px 0;' }, _('OpenWrt Command Reference')),
+            docBox(_('System Information'), E('div', {}, [codeBlock('uname -a\ncat /etc/openwrt_release\ncat /proc/cpuinfo\nfree -h\ndf -h\nuptime')])),
+            docBox(_('Network Diagnostics'), E('div', {}, [codeBlock('ip addr show\nip route show\niwinfo\nping -c 4 8.8.8.8\nnslookup google.com\ntraceroute 8.8.8.8')])),
+            docBox(_('WiFi Management'), E('div', {}, [codeBlock('/sbin/wifi down\n/sbin/wifi up\nwifi status\niwinfo wlan0 scan')])),
+            docBox(_('Firewall / Routing'), E('div', {}, [codeBlock('nft list ruleset\nuci show firewall\nuci show network\nfw4 reload')])),
+            docBox(_('Package Management'), E('div', {}, [codeBlock('opkg update && opkg list-installed\napk update && apk list -I')])),
+            docBox(_('Service Control'), E('div', {}, [codeBlock('/etc/init.d/network restart\nservice <name> enable\nservice <name> disable')])),
+            docBox(_('Logs and Debugging'), E('div', {}, [codeBlock('logread\nlogread -f\ndmesg\nlogread | grep error')])),
+            docBox(_('UCI Configuration'), E('div', {}, [codeBlock('uci show\nuci get network.wan.proto\nuci set network.wan.proto=dhcp\nuci commit network')])),
+            docBox(_('Process Management'), E('div', {}, [codeBlock('ps w\ntop -n 1\nkill <pid>\nlsmod')])),
+            docBox(_('GPIO / Hardware Buttons'), E('div', {}, [codeBlock('ubus call system board\nls /sys/class/gpio/\n/etc/rc.button/reset')])),
+            docBox(_('Backup and Restore'), E('div', {}, [codeBlock('sysupgrade -b /tmp/backup.tar.gz\nsysupgrade -r /tmp/backup.tar.gz\nfirstboot -y')])),
+            docBox(_('Useful One-Liners'), E('div', {}, [
                 E('p', {}, 'Clear cache:'), codeBlock('rm -rf /tmp/luci-* && /etc/init.d/rpcd restart && /etc/init.d/uhttpd restart'),
-                E('p', {}, 'LEDs off:'), codeBlock('for f in /sys/class/leds/*/brightness; do echo 0 > $f; done'),
-                E('p', {}, 'Reboot in 5 min:'), codeBlock('(sleep 300 && reboot) &')
+                E('p', {}, _('LEDs off:')), codeBlock('for f in /sys/class/leds/*/brightness; do echo 0 > $f; done'),
+                E('p', {}, _('Reboot in 5 min:')), codeBlock('(sleep 300 && reboot) &')
             ]))
         ]);
         return E('div', {}, [runnerBox, docs]);
@@ -2009,12 +2009,12 @@ return view.extend({
 
         var regenBar = E('div', { 'style': 'background:rgba(30,144,255,0.08);border:1px solid rgba(30,144,255,0.2);border-radius:8px;padding:12px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;' }, [
             E('div', { 'style': 'font-size:0.9em;' }, [
-                E('strong', {}, 'Generator: '),
-                E('span', {}, 'Rules are stored in UCI. After Save & Apply, click Regenerate to write the handler scripts into /etc/hotplug.d/iface/.')
+                E('strong', {}, _('Generator: ')),
+                E('span', {}, _('Rules are stored in UCI. After Save & Apply, click Regenerate to write the handler scripts into /etc/hotplug.d/iface/.'))
             ]),
             E('button', { 'class': 'btn cbi-button cbi-button-action', 'click': function() {
-                if (!confirm('Regenerate hotplug handler scripts from /etc/config/hotplug?')) return;
-                ui.addNotification('Running', 'Regenerating handlers...', 'info');
+                if (!confirm(_('Regenerate hotplug handler scripts from /etc/config/hotplug?'))) return;
+                ui.addTimeLimitedNotification(_('Running'), _('Regenerating handlers...'), 8000, 'info');
                 self.callSystemCommand('/bin/sh', [ '-c', '/etc/init.d/quickactions-hotplug restart' ]).then(function(r) {
                     var out = r.stdout || '';
                     if (r.stderr) out += '\n' + r.stderr;
@@ -5616,21 +5616,21 @@ return view.extend({
             'click': function() {
                 var iface = srcSel.value;
                 var ip = ipEl.value.trim();
-                if (!iface) { pingOut.textContent = 'No interface selected.'; return; }
-                if (!ip) { pingOut.textContent = 'Enter a target IP or host.'; return; }
-                pingOut.textContent = 'Pinging ' + ip + ' through ' + iface + '...';
+                if (!iface) { pingOut.textContent = _('No interface selected.'); return; }
+                if (!ip) { pingOut.textContent = _('Enter a target IP or host.'); return; }
+                pingOut.textContent = _('Pinging %s through %s...').format(ip, iface);
                 self.callVlan('ping_test', iface, ip).then(function(r) {
                     var out = (r && r.output) ? r.output : '';
                     var rc = (r && r.exit_code != null) ? r.exit_code : '?';
                     if (!out) {
-                        out = 'No output. Command: ping -I ' + iface + ' -c 3 -W 3 ' + ip + '\n' +
-                              'Exit code: ' + rc + '\n\n' +
-                              'Common causes:\n' +
-                              '- Interface has no route to target\n' +
-                              '- Interface is down\n' +
-                              '- Wrong device (use pppoe-wan for PPPoE WAN, not eth1)';
+                        out = _('No output. Command: ping -I %s -c 3 -W 3 %s').format(iface, ip) + '\n' +
+                              _('Exit code: %s').format(rc) + '\n\n' +
+                              _('Common causes:') + '\n' +
+                              '- ' + _('Interface has no route to target') + '\n' +
+                              '- ' + _('Interface is down') + '\n' +
+                              '- ' + _('Wrong device (use pppoe-wan for PPPoE WAN, not eth1)');
                     } else {
-                        out = 'Exit code: ' + rc + '\n' + out;
+                        out = _('Exit code: %s').format(rc) + '\n' + out;
                     }
                     pingOut.textContent = out;
                 });
