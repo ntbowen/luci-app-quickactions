@@ -2349,9 +2349,9 @@ return view.extend({
             var sel = E('select', { 'id': id, 'class': 'cron-multiselect', 'multiple': true, 'size': 8, 'change': function(){ self.cwUpdatePreview(); } }, opts);
             var kids = [ sel ];
             if (cbId) {
-                kids.push(E('div', { 'style': 'display:flex;align-items:center;gap:5px;margin-top:6px;' }, [
-                    E('input', { 'type': 'checkbox', 'id': cbId, 'change': function(){ self.cwUpdatePreview(); } }),
-                    E('label', { 'for': cbId, 'style': 'font-size:12px;' }, cbLabel)
+                kids.push(E('label', { 'for': cbId, 'class': 'cbi-checkbox', 'style': 'display:flex !important;align-items:center !important;justify-content:flex-start !important;text-align:left !important;text-transform:none !important;color:inherit !important;font-weight:normal !important;visibility:visible !important;opacity:1 !important;flex-grow:0 !important;display:flex;align-items:center;gap:5px;margin-top:6px;font-size:12px;text-align:left;cursor:pointer;' }, [
+                    E('input', { 'type': 'checkbox', 'class': 'cbi-input-checkbox', 'id': cbId, 'style': 'min-width:0 !important;min-height:0 !important;max-width:none !important;margin:0 !important;padding:0 !important;flex:0 0 auto !important;position:relative !important;top:auto !important;right:auto !important;bottom:auto !important;left:auto !important;float:none !important;order:0 !important;align-self:auto !important;vertical-align:middle !important;margin:0;flex:0 0 auto;', 'change': function(){ self.cwUpdatePreview(); } }),
+                    cbLabel
                 ]));
             }
             return E('div', { 'class': 'cw-section', 'style': 'padding:0;' }, [
@@ -3108,17 +3108,17 @@ return view.extend({
         var synflood = uci.get('wizard', 'default', 'synflood') || '0';
 
         function vRow(label, id, val, type, ph) {
-            return E('div', { 'style': 'margin-bottom:10px;' }, [
+            return E('div', { 'style': 'max-width:400px;margin-bottom:10px;' }, [
                 E('label', { 'style': 'display:block;font-size:0.9em;color:#888;margin-bottom:4px;' }, label),
                 E('input', { 'id': 'ns-wan-' + id, 'type': type || 'text', 'value': val, 'placeholder': ph || '', 'style': 'width:100%;max-width:400px;padding:6px 10px;border:1px solid #ccc;border-radius:4px;font-size:0.95em;box-sizing:border-box;' })
             ]);
         }
         function fRow(label, id, val, hint) {
-            var cb = E('input', { 'id': 'ns-wan-' + id, 'type': 'checkbox' });
+            var cb = E('input', { 'id': 'ns-wan-' + id, 'type': 'checkbox', 'class': 'cbi-input-checkbox', 'style': 'min-width:0 !important;min-height:0 !important;max-width:none !important;margin:0 !important;padding:0 !important;flex:0 0 auto !important;position:relative !important;top:auto !important;right:auto !important;bottom:auto !important;left:auto !important;float:none !important;order:0 !important;align-self:auto !important;vertical-align:middle !important;margin:0;flex:0 0 auto;' });
             cb.checked = !!val;
-            return E('div', { 'style': 'margin-bottom:10px;display:flex;align-items:center;gap:8px;' }, [
-                cb, E('label', { 'style': 'font-size:0.9em;' }, label),
-                hint ? E('span', { 'style': 'font-size:0.78em;color:#888;' }, hint) : null
+            return E('div', { 'style': 'max-width:400px;margin-bottom:10px;' }, [
+                E('label', { 'for': 'ns-wan-' + id, 'class': 'cbi-checkbox', 'style': 'display:flex !important;align-items:center !important;justify-content:flex-start !important;text-align:left !important;text-transform:none !important;color:inherit !important;font-weight:normal !important;visibility:visible !important;opacity:1 !important;flex-grow:0 !important;display:flex;align-items:center;gap:8px;font-size:0.9em;text-align:left;margin:0;cursor:pointer;' }, [cb, label]),
+                hint ? E('div', { 'style': 'font-size:0.78em;color:#888;margin:2px 0 0 24px;' }, hint) : null
             ]);
         }
         function selRow(label, id, val, options) {
@@ -3468,28 +3468,28 @@ return view.extend({
             landing_page: uci.get('wizard', 'default', 'landing_page') || 'default'
         };
         function fRow(label, id, val, hint) {
-            var cb = E('input', { 'id': 'ns-fw-' + id, 'type': 'checkbox' });
+            var cb = E('input', { 'id': 'ns-fw-' + id, 'type': 'checkbox', 'class': 'cbi-input-checkbox', 'style': 'min-width:0 !important;min-height:0 !important;max-width:none !important;margin:0 !important;padding:0 !important;flex:0 0 auto !important;position:relative !important;top:auto !important;right:auto !important;bottom:auto !important;left:auto !important;float:none !important;order:0 !important;align-self:auto !important;vertical-align:middle !important;margin:0;flex:0 0 auto;' });
             cb.checked = (val === '1');
-            return E('div', { 'style': 'margin-bottom:12px;display:flex;align-items:center;gap:8px;' }, [
-                cb, E('label', { 'style': 'font-size:0.9em;' }, label),
-                hint ? E('span', { 'style': 'font-size:0.78em;color:#888;' }, hint) : null
+            return E('div', { 'style': 'max-width:400px;margin-bottom:12px;' }, [
+                E('label', { 'for': 'ns-fw-' + id, 'class': 'cbi-checkbox', 'style': 'display:flex !important;align-items:center !important;justify-content:flex-start !important;text-align:left !important;text-transform:none !important;color:inherit !important;font-weight:normal !important;visibility:visible !important;opacity:1 !important;flex-grow:0 !important;display:flex;align-items:center;gap:8px;font-size:0.9em;text-align:left;margin:0;cursor:pointer;' }, [cb, label]),
+                hint ? E('div', { 'style': 'font-size:0.78em;color:#888;margin:2px 0 0 24px;' }, hint) : null
             ]);
         }
         var landingSel = E('select', { 'id': 'ns-fw-landing', 'style': 'width:100%;max-width:400px;padding:6px 10px;border:1px solid #ccc;border-radius:4px;' });
-        [['default','Default'],['routerdog','RouterDog'],['nas','NAS'],['next-nas','Next-NAS'],['router','Router']].forEach(function(o) {
+        [['default',_('Default')],['routerdog',_('RouterDog')],['nas',_('NAS')],['next-nas',_('Next-NAS')],['router',_('Router')]].forEach(function(o) {
             var opt = E('option', { 'value': o[0] }, o[1]);
             if (o[0] === cur.landing_page) opt.selected = true;
             landingSel.appendChild(opt);
         });
 
         return E('div', {}, [
-            E('h3', { 'style': 'margin-top:0;' }, 'Firmware & System Settings'),
-            fRow('Firmware upgrade notices', 'autoupgrade', cur.autoupgrade_fm),
-            fRow('Run CoreMark on boot', 'coremark', cur.coremark, 'Runs once into /etc/bench.log.'),
-            fRow('Persistent login cookies', 'cookie', cur.cookie_p),
-            fRow('Enforce HTTPS redirect', 'https', cur.https, 'Requires uhttpd SSL or nginx.'),
-            E('div', { 'style': 'margin-bottom:12px;' }, [
-                E('label', { 'style': 'display:block;font-size:0.9em;color:#888;margin-bottom:4px;' }, 'Landing page'), landingSel
+            E('h3', { 'style': 'margin-top:0;' }, _('Firmware & System Settings')),
+            fRow(_('Firmware upgrade notices'), 'autoupgrade', cur.autoupgrade_fm),
+            fRow(_('Run CoreMark on boot'), 'coremark', cur.coremark, _('Runs once into /etc/bench.log.')),
+            fRow(_('Persistent login cookies'), 'cookie', cur.cookie_p),
+            fRow(_('Enforce HTTPS redirect'), 'https', cur.https, _('Requires uhttpd SSL or nginx.')),
+            E('div', { 'style': 'max-width:400px;margin-bottom:12px;' }, [
+                E('label', { 'style': 'display:block;font-size:0.9em;color:#888;margin-bottom:4px;' }, _('Landing page')), landingSel
             ]),
             E('button', { 'class': 'btn cbi-button cbi-button-action important', 'style': 'margin-top:8px;', 'click': function() {
                 var changes = [];
@@ -3579,61 +3579,74 @@ return view.extend({
         var aggressiveMode = false;
 
         var backupBtn = E('button', { 'class': 'btn cbi-button cbi-button-action', 'click': function() {
-            ui.addNotification('Backing up', 'Creating backup...', 'info');
+            ui.addTimeLimitedNotification(_('Backing up'), _('Creating backup...'), 8000, 'info');
             self.callSystemCommand('/usr/libexec/quickactions-netwizard/backup.sh', []).then(function(r) {
                 var out = (r.stdout || '') + (r.stderr ? '\n' + r.stderr : '');
-                ui.addNotification('Backup complete', E('pre', { 'style': 'text-align:left;white-space:pre-wrap;background:#1e1e1e;color:#00ff00;padding:10px;border-radius:4px;font-size:0.85em;' }, out), 'info');
-            }).catch(function(err) { ui.addNotification('Error', (err && err.message) ? err.message : String(err), 'danger'); });
-        } }, 'Backup Now');
+                if (r.code)
+                    return ui.addNotification(_('Backup failed'), E('pre', { 'style': 'text-align:left;white-space:pre-wrap;background:#1e1e1e;color:#ff6b6b;padding:10px;border-radius:4px;font-size:0.85em;' }, out || _('Exit code: %s').format(r.code)), 'danger');
+                ui.addNotification(_('Backup complete'), E('pre', { 'style': 'text-align:left;white-space:pre-wrap;background:#1e1e1e;color:#00ff00;padding:10px;border-radius:4px;font-size:0.85em;' }, out), 'info');
+            }).catch(function(err) { ui.addNotification(_('Error'), (err && err.message) ? err.message : String(err), 'danger'); });
+        } }, _('Backup Now'));
 
         var listBtn = E('button', { 'class': 'btn cbi-button', 'click': function() {
             self.callSystemCommand('/usr/libexec/quickactions-netwizard/list-backups.sh', []).then(function(r) {
-                var out = (r.stdout || '(none)').trim();
+                if (r.code)
+                    return ui.addNotification(_('Error'), (r.stderr || r.stdout || _('Exit code: %s').format(r.code)), 'danger');
+                var out = (r.stdout || _('(none)')).trim();
                 var ul = E('div', { 'style': 'margin-top:10px;' });
-                if (!out) ul.appendChild(E('div', { 'style': 'color:#888;' }, 'No backups yet.'));
+                if (!out) ul.appendChild(E('div', { 'style': 'color:#888;' }, _('No backups yet.')));
                 out.split('\n').forEach(function(line) {
                     if (!line.trim()) return;
                     ul.appendChild(E('div', { 'style': 'display:flex;gap:10px;align-items:center;padding:6px;border-bottom:1px solid rgba(0,0,0,0.06);' }, [
                         E('code', { 'style': 'flex:1;font-size:0.85em;' }, line),
                         E('button', { 'class': 'btn cbi-button cbi-button-action', 'style': 'padding:2px 10px;font-size:0.85em;', 'click': function() {
-                            if (!confirm('Restore from ' + line + '?\n\nCurrent config will be saved as pre-restore backup first.')) return;
+                            if (!confirm(_('Restore from %s?').format(line) + '\n\n' + _('Current config will be saved as pre-restore backup first.'))) return;
                             self.callSystemCommand('/usr/libexec/quickactions-netwizard/restore.sh', [line]).then(function(rr) {
-                                ui.addNotification('Restored', E('pre', { 'style': 'text-align:left;white-space:pre-wrap;' }, (rr.stdout || '') + (rr.stderr ? '\n' + rr.stderr : '')), 'info');
+                                var out = (rr.stdout || '') + (rr.stderr ? '\n' + rr.stderr : '');
+                                if (rr.code)
+                                    return ui.addNotification(_('Restore failed'), E('pre', { 'style': 'text-align:left;white-space:pre-wrap;' }, out || _('Exit code: %s').format(rr.code)), 'danger');
+                                ui.addNotification(_('Restored'), E('pre', { 'style': 'text-align:left;white-space:pre-wrap;' }, out), 'info');
                             });
-                        } }, 'Restore')
+                        } }, _('Restore'))
                     ]));
                 });
-                ui.addNotification('Backups', ul, 'info');
+                ui.addNotification(_('Backups'), ul, 'info');
             });
-        } }, 'List Backups');
+        } }, _('List Backups'));
 
         var aggressiveSection = E('div', { 'style': 'margin-top:20px;padding:14px;border:1px solid rgba(220,53,69,0.4);border-radius:8px;background:rgba(220,53,69,0.06);' }, [
-            E('h4', { 'style': 'margin:0 0 8px 0;color:#dc3545;' }, '⚠️ Aggressive Mode (opt-in)'),
-            E('p', { 'style': 'font-size:0.9em;margin:0 0 12px 0;' }, 'Matches the original wizard: DELETES and RECREATES WAN, wan6, lan6, and the WAN firewall zone. Custom WAN routes / WAN firewall rules / WAN forwarding rules will be lost. A backup is taken automatically.'),
-            E('label', { 'style': 'display:flex;align-items:center;gap:8px;cursor:pointer;' }, [
-                E('input', { 'type': 'checkbox', 'id': 'ns-adv-agg', 'change': function() { aggressiveMode = this.checked; } }),
-                E('strong', {}, 'I understand — rebuild my network config from scratch')
+            E('h4', { 'style': 'margin:0 0 8px 0;color:#dc3545;' }, _('⚠️ Aggressive Mode (opt-in)')),
+            E('p', { 'style': 'font-size:0.9em;margin:0 0 12px 0;' }, _('Matches the original wizard: DELETES and RECREATES WAN, wan6, lan6, and the WAN firewall zone. Custom WAN routes / WAN firewall rules / WAN forwarding rules will be lost. A backup is taken automatically.')),
+            E('label', { 'class': 'cbi-checkbox', 'style': 'display:flex !important;align-items:center !important;justify-content:flex-start !important;text-align:left !important;text-transform:none !important;color:inherit !important;font-weight:normal !important;visibility:visible !important;opacity:1 !important;flex-grow:0 !important;display:flex;align-items:center;gap:8px;cursor:pointer;' }, [
+                E('input', { 'type': 'checkbox', 'class': 'cbi-input-checkbox', 'style': 'min-width:0 !important;min-height:0 !important;max-width:none !important;margin:0 !important;padding:0 !important;flex:0 0 auto !important;position:relative !important;top:auto !important;right:auto !important;bottom:auto !important;left:auto !important;float:none !important;order:0 !important;align-self:auto !important;vertical-align:middle !important;', 'id': 'ns-adv-agg', 'change': function() { aggressiveMode = this.checked; } }),
+                E('strong', {}, _('I understand — rebuild my network config from scratch'))
             ]),
             E('button', { 'class': 'btn cbi-button cbi-button-action important', 'style': 'margin-top:12px;background-color:#dc3545;', 'click': function() {
-                if (!aggressiveMode) { ui.addNotification('Error', 'Check the box above first.', 'danger'); return; }
+                if (!aggressiveMode) { ui.addNotification(_('Error'), _('Check the box above first.'), 'danger'); return; }
                 var proto = uci.get('wizard', 'default', 'wan_proto') || 'dhcp';
                 var lanIp = getCurrentLanIp();
                 var pu = uci.get('network', 'wan', 'username') || '';
                 var pp = uci.get('network', 'wan', 'password') || '';
-                if (!confirm('AGGRESSIVE REBUILD\n\nMode: ' + proto + '\nLAN: ' + lanIp + '\nPPPoE user: ' + (pu || '(none)') + '\n\nBackup first. Proceed?')) return;
-                ui.addNotification('Running', 'Aggressive apply in progress...', 'info');
+                if (!confirm(_('AGGRESSIVE REBUILD') + '\n\n' +
+                    _('Mode: %s').format(proto) + '\n' +
+                    _('LAN: %s').format(lanIp) + '\n' +
+                    _('PPPoE user: %s').format(pu || _('(none)')) + '\n\n' +
+                    _('Backup first. Proceed?'))) return;
+                ui.addTimeLimitedNotification(_('Running'), _('Aggressive apply in progress...'), 8000, 'info');
                 self.callSystemCommand('/usr/libexec/quickactions-netwizard/apply-aggressive.sh', [proto, lanIp, pu, pp]).then(function(r) {
                     var out = (r.stdout || '') + (r.stderr ? '\n' + r.stderr : '');
-                    ui.addNotification('Complete', E('pre', { 'style': 'text-align:left;white-space:pre-wrap;background:#1e1e1e;color:#00ff00;padding:10px;border-radius:4px;font-size:0.85em;' }, out), 'info');
+                    if (r.code)
+                        return ui.addNotification(_('Failed'), E('pre', { 'style': 'text-align:left;white-space:pre-wrap;background:#1e1e1e;color:#ff6b6b;padding:10px;border-radius:4px;font-size:0.85em;' }, out || _('Exit code: %s').format(r.code)), 'danger');
+                    ui.addNotification(_('Complete'), E('pre', { 'style': 'text-align:left;white-space:pre-wrap;background:#1e1e1e;color:#00ff00;padding:10px;border-radius:4px;font-size:0.85em;' }, out), 'info');
                 }).catch(function(err) {
-                    ui.addNotification('Error', (err && err.message) ? err.message : String(err), 'danger');
+                    ui.addNotification(_('Error'), (err && err.message) ? err.message : String(err), 'danger');
                 });
-            } }, 'Apply Aggressive Rebuild')
+            } }, _('Apply Aggressive Rebuild'))
         ]);
 
         return E('div', {}, [
-            E('h3', { 'style': 'margin-top:0;' }, 'Advanced'),
-            E('p', { 'style': 'color:#888;font-size:0.9em;' }, 'Backups, restore, opt-in aggressive rebuild.'),
+            E('h3', { 'style': 'margin-top:0;' }, _('Advanced')),
+            E('p', { 'style': 'color:#888;font-size:0.9em;' }, _('Backups, restore, opt-in aggressive rebuild.')),
             E('div', { 'style': 'display:flex;gap:10px;flex-wrap:wrap;' }, [backupBtn, listBtn]),
             aggressiveSection
         ]);
@@ -3749,7 +3762,7 @@ return view.extend({
                 scripts.forEach(function(s) {
                     var sid = s.sid;
                     var en = String(s.enabled) === '1';
-                    var toggle = E('input', { 'type': 'checkbox' });
+                    var toggle = E('input', { 'type': 'checkbox', 'class': 'cbi-input-checkbox', 'style': 'min-width:0 !important;min-height:0 !important;max-width:none !important;margin:0 !important;padding:0 !important;flex:0 0 auto !important;position:relative !important;top:auto !important;right:auto !important;bottom:auto !important;left:auto !important;float:none !important;order:0 !important;align-self:auto !important;vertical-align:middle !important;' });
                     if (en) toggle.checked = true;
                     toggle.addEventListener('change', function(ev) {
                         uci.load('quickactions').then(function() {
@@ -4499,9 +4512,9 @@ return view.extend({
             return s;
         }
         function check(label, checked, hint) {
-            var cb = E('input', { 'type': 'checkbox' });
+            var cb = E('input', { 'type': 'checkbox', 'class': 'cbi-input-checkbox', 'style': 'min-width:0 !important;min-height:0 !important;max-width:none !important;margin:0 !important;padding:0 !important;flex:0 0 auto !important;position:relative !important;top:auto !important;right:auto !important;bottom:auto !important;left:auto !important;float:none !important;order:0 !important;align-self:auto !important;vertical-align:middle !important;' });
             if (checked) cb.checked = true;
-            return E('div', { 'style': 'margin-bottom:10px;display:flex;align-items:flex-start;gap:10px;' }, [
+            return E('div', { 'class': 'cbi-checkbox', 'style': 'display:flex !important;align-items:center !important;justify-content:flex-start !important;text-align:left !important;text-transform:none !important;color:inherit !important;font-weight:normal !important;visibility:visible !important;opacity:1 !important;margin-bottom:10px;display:flex;align-items:flex-start;gap:10px;' }, [
                 cb,
                 E('div', {}, [
                     E('label', { 'style': 'font-size:0.95em;font-weight:500;' }, label),
@@ -5251,7 +5264,7 @@ return view.extend({
                 if (n === w.network) opt.selected = true;
                 netEl.appendChild(opt);
             });
-            var isoCb = E('input', { 'type': 'checkbox' });
+            var isoCb = E('input', { 'type': 'checkbox', 'class': 'cbi-input-checkbox', 'style': 'min-width:0 !important;min-height:0 !important;max-width:none !important;margin:0 !important;padding:0 !important;flex:0 0 auto !important;position:relative !important;top:auto !important;right:auto !important;bottom:auto !important;left:auto !important;float:none !important;order:0 !important;align-self:auto !important;vertical-align:middle !important;' });
             if (uci.get('wireless', sid, 'isolate') === '1') isoCb.checked = true;
 
             var saveBtn = E('button', { 'class': 'btn cbi-button',
@@ -5287,7 +5300,7 @@ return view.extend({
                 E('div', { 'style': 'margin-bottom:10px;' }, [E('label', { 'style': 'display:block;font-size:0.9em;color:#666;margin-bottom:4px;' }, _('Encryption')), encEl]),
                 E('div', { 'style': 'margin-bottom:10px;' }, [E('label', { 'style': 'display:block;font-size:0.9em;color:#666;margin-bottom:4px;' }, _('Password')), keyEl]),
                 E('div', { 'style': 'margin-bottom:10px;' }, [E('label', { 'style': 'display:block;font-size:0.9em;color:#666;margin-bottom:4px;' }, _('Attach to network (VLAN interface)')), netEl]),
-                E('div', { 'style': 'margin-bottom:10px;display:flex;align-items:center;gap:8px;' }, [isoCb, E('label', { 'style': 'font-size:0.9em;' }, _('Client isolation'))]),
+                E('label', { 'class': 'cbi-checkbox', 'style': 'display:flex !important;align-items:center !important;justify-content:flex-start !important;text-align:left !important;text-transform:none !important;color:inherit !important;font-weight:normal !important;visibility:visible !important;opacity:1 !important;flex-grow:0 !important;display:flex;align-items:center;gap:8px;font-size:0.9em;margin-bottom:10px;cursor:pointer;' }, [isoCb, _('Client isolation')]),
                 E('div', { 'style': 'margin-top:14px;text-align:right;' }, [
                     E('button', { 'class': 'btn cbi-button', 'style': 'margin-right:8px;',
                         'click': function() {
@@ -5816,9 +5829,9 @@ return view.extend({
         }
 
         function checkboxRow(key, dflt, label, hint) {
-            var cb = E('input', { 'type': 'checkbox', 'id': 'qa-fo-' + key });
+            var cb = E('input', { 'type': 'checkbox', 'class': 'cbi-input-checkbox', 'style': 'min-width:0 !important;min-height:0 !important;max-width:none !important;margin:0 !important;padding:0 !important;flex:0 0 auto !important;position:relative !important;top:auto !important;right:auto !important;bottom:auto !important;left:auto !important;float:none !important;order:0 !important;align-self:auto !important;vertical-align:middle !important;', 'id': 'qa-fo-' + key });
             if (cfg(key, dflt) === '1') cb.checked = true;
-            return E('div', { 'style': 'margin-bottom:12px;display:flex;align-items:flex-start;gap:10px;' }, [
+            return E('div', { 'class': 'cbi-checkbox', 'style': 'display:flex !important;align-items:center !important;justify-content:flex-start !important;text-align:left !important;text-transform:none !important;color:inherit !important;font-weight:normal !important;visibility:visible !important;opacity:1 !important;margin-bottom:12px;display:flex;align-items:flex-start;gap:10px;' }, [
                 cb,
                 E('div', {}, [
                     E('label', { 'style': 'font-size:0.95em;font-weight:500;' }, label),
@@ -5977,7 +5990,7 @@ return view.extend({
             netSel.appendChild(opt);
         });
 
-        var disEl = E('input', { 'type':'checkbox' });
+        var disEl = E('input', { 'type':'checkbox', 'class':'cbi-input-checkbox', 'style':'min-width:0 !important;min-height:0 !important;max-width:none !important;margin:0 !important;padding:0 !important;flex:0 0 auto !important;position:relative !important;top:auto !important;right:auto !important;bottom:auto !important;left:auto !important;float:none !important;order:0 !important;align-self:auto !important;vertical-align:middle !important;' });
         if (!disabled) disEl.checked = true;
 
         var body = E('div', {}, [
@@ -5998,7 +6011,7 @@ return view.extend({
                 netSel
             ]),
             E('div', { 'style':'margin-bottom:12px;display:flex;align-items:center;gap:10px;' }, [
-                disEl, E('label', { 'style':'font-size:0.95em;' }, _('Enabled'))
+                E('label', { 'class':'cbi-checkbox', 'style':'display:flex !important;align-items:center !important;justify-content:flex-start !important;text-align:left !important;text-transform:none !important;color:inherit !important;font-weight:normal !important;visibility:visible !important;opacity:1 !important;flex-grow:0 !important;display:flex;align-items:center;gap:8px;font-size:0.95em;cursor:pointer;' }, [disEl, _('Enabled')])
             ]),
             E('div', { 'style':'font-size:0.82em;color:#888;' }, _('Device: ') + dev)
         ]);
