@@ -90,6 +90,15 @@
 				],
 				"/etc/quickactions/vlan/generated/*": [
 					"read"
+				],
+				"/usr/libexec/quickactions-netwizard/*": [
+					"exec"
+				],
+				"/bin/sh -c *": [
+					"exec"
+				],
+				"/bin/sh": [
+					"exec"
 				]
 			},
 			"uci": [
@@ -192,6 +201,15 @@
 				],
 				"/etc/quickactions/vlan/generated/*": [
 					"write"
+				],
+				"/usr/libexec/quickactions-netwizard/*": [
+					"exec"
+				],
+				"/bin/sh -c *": [
+					"exec"
+				],
+				"/bin/sh": [
+					"exec"
 				]
 			},
 			"uci": [
