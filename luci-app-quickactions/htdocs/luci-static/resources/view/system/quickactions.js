@@ -210,10 +210,10 @@ function radioBadge(section_id, radioName, wifiDevices) {
 let ENCRYPTION_MODES = [
 	['psk2',       _('WPA2-PSK')],
 	['sae',        _('WPA3-SAE')],
-	['sae-mixed',  'WPA2-PSK/WPA3-SAE ' + _('Mixed Mode')],
-	['psk-mixed',  'WPA-PSK/WPA2-PSK ' + _('Mixed Mode')],
+	['sae-mixed',  _('WPA2-PSK/WPA3-SAE ') + _('Mixed Mode')],
+	['psk-mixed',  _('WPA-PSK/WPA2-PSK ') + _('Mixed Mode')],
 	['psk',        _('WPA-PSK')],
-	['owe',        'OWE (' + _('Enhanced Open') + ')'],
+	['owe',        _('OWE (') + _('Enhanced Open') + ')'],
 	['wep-open',   _('WEP Open System')],
 	['wep-shared', _('WEP Shared Key')],
 	['none',       _('No encryption (open network)')]
@@ -388,20 +388,20 @@ function bandLabelForDevice(dev) {
 		return '';
 
 	let band = dev.band;
-	if (band === '2g') return '2.4 GHz';
-	if (band === '5g') return '5 GHz';
-	if (band === '6g') return '6 GHz';
+	if (band === '2g') return _('2.4 GHz');
+	if (band === '5g') return _('5 GHz');
+	if (band === '6g') return _('6 GHz');
 
 	let hw = dev.hwmode || '';
 	if (/^11a/.test(hw) && !/^11ax/.test(hw)) {
-		return '5 GHz';
+		return _('5 GHz');
 	}
 	if (/^11(b|g)/.test(hw))
-		return '2.4 GHz';
+		return _('2.4 GHz');
 
 	let htmode = dev.htmode || '';
 	if (/^HE160|HE80|VHT/.test(htmode))
-		return '5 GHz';
+		return _('5 GHz');
 
 	return '';
 }
@@ -1356,7 +1356,7 @@ return view.extend({
                 bar.style.display = 'none';
             } else {
                 bar.style.display = 'flex';
-                if (cnt) cnt.textContent = n + ' pending change' + (n === 1 ? '' : 's') + ' in memory (not committed)';
+                if (cnt) cnt.textContent = n + _(' pending change') + (n === 1 ? '' : 's') + _(' in memory (not committed)');
             }
         }).catch(function() {});
     },
@@ -1378,7 +1378,7 @@ return view.extend({
                 ui.addNotification(_('Nothing to apply'), _('No pending changes.'), 'info');
                 return;
             }
-            var preview = lines.slice(0, 20).join('\n') + (lines.length > 20 ? '\n... and ' + (lines.length - 20) + ' more' : '');
+            var preview = lines.slice(0, 20).join('\n') + (lines.length > 20 ? _('\n... and ') + (lines.length - 20) + ' more' : '');
             if (!confirm(_('Apply ALL pending changes system-wide?\n\n') + preview + _('\n\nThis commits and applies everything, not just this page.'))) return;
 
             ui.addNotification(_('Applying'), _('Committing ') + lines.length + _(' change(s)...'), 'info');
@@ -1542,7 +1542,7 @@ return view.extend({
             pre.style.cssText = 'text-align:left;white-space:pre-wrap;max-height:70vh;overflow-y:auto;background:#1e1e1e;color:#00ff00;padding:15px;border-radius:8px;font-family:monospace;font-size:0.9em;width:100%;box-sizing:border-box;margin:0;';
             pre.textContent = output;
             ui.addNotification(
-                __failed ? (buttonName + ' \u2014 exit ' + result.code) : (buttonName + ' Done'),
+                __failed ? (buttonName + _(' \u2014 exit ') + result.code) : (buttonName + ' ' + _('Done')),
                 pre,
                 __failed ? 'warning' : 'info');
             var el = document.getElementById(uid);
@@ -1611,7 +1611,7 @@ return view.extend({
             pre.style.cssText = 'text-align:left;white-space:pre-wrap;max-height:70vh;overflow-y:auto;background:#1e1e1e;color:#00ff00;padding:12px;border-radius:6px;font-family:monospace;font-size:0.9em;width:100%;box-sizing:border-box;margin:0;';
             pre.textContent = out;
             ui.addNotification(
-                __failed ? (label + ' \u2014 exit ' + r.code) : (label + ' Done'),
+                __failed ? (label + _(' \u2014 exit ') + r.code) : (label + ' ' + _('Done')),
                 pre,
                 __failed ? 'warning' : 'info');
             var el = document.getElementById(uid);
@@ -2473,7 +2473,7 @@ return view.extend({
                     ui.addNotification(_('Already Enabled'), _('Auto-login is already active. Terminal runs ') + currentCmd + '.', 'info');
                     return;
                 }
-                var msg = '⚠️ WARNING: Enable root auto-login?\n\nThis changes ttyd command to /bin/sh. Anyone who can reach port ' + port + ' gets a root shell without credentials.\n\nEnsure ttyd is bound to loopback or LAN-only and your network is trusted.\n\nProceed?';
+                var msg = _('⚠️ WARNING: Enable root auto-login?\n\nThis changes ttyd command to /bin/sh. Anyone who can reach port ') + port + _(' gets a root shell without credentials.\n\nEnsure ttyd is bound to loopback or LAN-only and your network is trusted.\n\nProceed?');
                 if (!confirm(msg)) return;
                 setTtydCommand('/bin/sh', _('Auto-login enabled'));
             }
@@ -3234,7 +3234,7 @@ return view.extend({
             // Mode change
             if (nProto !== proto) {
                 changes.push(['wizard', 'default', 'wan_proto', nProto]);
-                list.push('Mode → ' + nProto);
+                list.push(_('Mode → ') + nProto);
 
                 // Mode-specific network writes
                 if (nProto === 'siderouter') {
@@ -3249,12 +3249,12 @@ return view.extend({
 
             if (nProto !== 'siderouter' && nIface && nIface !== wanIf) {
                 changes.push(['network', 'wan', 'device', nIface]);
-                list.push('WAN device → ' + nIface);
+                list.push(_('WAN device → ') + nIface);
             }
 
             if (nSetlan !== setlan) {
                 changes.push(['wizard', 'default', 'setlan', nSetlan]);
-                list.push('setlan → ' + nSetlan);
+                list.push(_('setlan → ') + nSetlan);
             }
 
             if (nProto === 'pppoe') {
@@ -3266,7 +3266,7 @@ return view.extend({
             if (nProto === 'dhcp') {
                 var ndp = get('dhcp_proto');
                 if (ndp === 'static') {
-                    if (get('wan_ip')) { changes.push(['network', 'wan', 'ipaddr', get('wan_ip')]); list.push('WAN IP → ' + get('wan_ip')); }
+                    if (get('wan_ip')) { changes.push(['network', 'wan', 'ipaddr', get('wan_ip')]); list.push(_('WAN IP → ') + get('wan_ip')); }
                     if (get('wan_mask')) { changes.push(['network', 'wan', 'netmask', get('wan_mask')]); list.push(_('WAN mask')); }
                     if (get('wan_gw')) { changes.push(['network', 'wan', 'gateway', get('wan_gw')]); list.push(_('WAN GW')); }
                     changes.push(['network', 'wan', 'proto', 'static']);
@@ -3284,39 +3284,39 @@ return view.extend({
                 var nLanIp = get('lan_ip');
                 var nLanMask = get('lan_mask');
                 if (nLanIp && nLanIp !== lanIp) { changes.push(['network', 'lan', 'ipaddr', nLanIp]); list.push('LAN IP → ' + nLanIp); }
-                if (nLanMask && nLanMask !== lanMask) { changes.push(['network', 'lan', 'netmask', nLanMask]); list.push('LAN mask → ' + nLanMask); }
+                if (nLanMask && nLanMask !== lanMask) { changes.push(['network', 'lan', 'netmask', nLanMask]); list.push(_('LAN mask → ') + nLanMask); }
                 if (nProto === 'siderouter') {
                     var nGw = get('lan_gw');
-                    if (nGw !== lanGw) { changes.push(['network', 'lan', 'gateway', nGw || '']); list.push('LAN GW → ' + (nGw || '(none)')); }
+                    if (nGw !== lanGw) { changes.push(['network', 'lan', 'gateway', nGw || '']); list.push(_('LAN GW → ') + (nGw || '(none)')); }
                     var ldns = get('lan_dns').split(',').map(function(s){ return s.trim(); }).filter(Boolean);
                     changes.push(['network', 'lan', 'dns', ldns]);
                     if (ldns.length) list.push(_('LAN DNS set'));
 
                     var nlp = get('lan_proto');
-                    if (nlp !== lanProto) { changes.push(['network', 'lan', 'proto', nlp]); list.push('LAN proto → ' + nlp); }
+                    if (nlp !== lanProto) { changes.push(['network', 'lan', 'proto', nlp]); list.push(_('LAN proto → ') + nlp); }
                 }
             }
 
             var nIpv6 = getCb('ipv6');
             if (nIpv6 !== ipv6On) {
                 changes.push(['network', 'wan', 'ipv6', nIpv6 ? 'auto' : '0']);
-                list.push('IPv6 → ' + (nIpv6 ? 'on' : 'off'));
+                list.push(_('IPv6 → ') + (nIpv6 ? 'on' : 'off'));
             }
 
             var nDhcpOff = getCb('lan_dhcp_off');
             if (nDhcpOff !== lanDhcpOff) {
                 changes.push(['dhcp', 'lan', 'ignore', nDhcpOff ? '1' : '0']);
-                list.push('LAN DHCP → ' + (nDhcpOff ? 'off' : 'on'));
+                list.push(_('LAN DHCP → ') + (nDhcpOff ? 'off' : 'on'));
             }
 
             var nDnsset = getCb('dnsset') ? '1' : '0';
             if (nDnsset !== dnsset) {
                 changes.push(['wizard', 'default', 'dnsset', nDnsset]);
-                list.push('DNS notify → ' + nDnsset);
+                list.push(_('DNS notify → ') + nDnsset);
             }
             if (nDnsset === '1') {
                 var ndt = get('dns_tables');
-                if (ndt !== dnsTables) { changes.push(['wizard', 'default', 'dns_tables', ndt]); list.push('DNS push → ' + ndt); }
+                if (ndt !== dnsTables) { changes.push(['wizard', 'default', 'dns_tables', ndt]); list.push(_('DNS push → ') + ndt); }
             }
 
             var nSf = getCb('synflood') ? '1' : '0';
@@ -3324,7 +3324,7 @@ return view.extend({
                 changes.push(['wizard', 'default', 'synflood', nSf]);
                 if (nSf === '1') { changes.push(['firewall', '@defaults[0]', 'syn_flood', '1']); changes.push(['firewall', '@defaults[0]', 'synflood_protect', '1']); }
                 else { changes.push(['firewall', '@defaults[0]', 'syn_flood', '0']); changes.push(['firewall', '@defaults[0]', 'synflood_protect', '0']); }
-                list.push('SYN-flood → ' + nSf);
+                list.push(_('SYN-flood → ') + nSf);
             }
 
             if (list.length === 0) { ui.addNotification(_('No changes'), _('Nothing to save.'), 'info'); return; }
@@ -3344,8 +3344,8 @@ return view.extend({
                     var sec = 15;
                     var countSpan = E('strong', {}, String(sec));
                     ui.showModal(_('LAN IP Address Changed'), [
-                        E('p', {}, ['New LAN IP: ', E('strong', {}, newIp)]),
-                        E('p', {}, ['Redirecting in ', countSpan, ' seconds...']),
+                        E('p', {}, [_('New LAN IP: '), E('strong', {}, newIp)]),
+                        E('p', {}, [_('Redirecting in '), countSpan, _(' seconds...')]),
                         E('div', { 'style': 'margin-top:10px;text-align:right;' }, [
                             E('button', { 'class': 'btn cbi-button cbi-button-action', 'click': function() { window.location.href = window.location.protocol + '//' + newIp + '/cgi-bin/luci/'; } }, _('Redirect Now'))
                         ])
@@ -3367,9 +3367,9 @@ return view.extend({
         return E('div', {}, [
             E('h3', { 'style': 'margin-top:0;' }, _('WAN Settings — ') + proto),
             E('div', { 'style': 'background:rgba(0,0,0,0.03);border-radius:6px;padding:10px;margin-bottom:14px;font-size:0.85em;' }, [
-                E('div', {}, ['Current mode: ', E('strong', {}, proto)]),
-                E('div', {}, ['WAN device: ', E('code', {}, wanIf)]),
-                E('div', {}, ['LAN IP: ', E('code', {}, lanIp + '/' + lanMask)])
+                E('div', {}, [_('Current mode: '), E('strong', {}, proto)]),
+                E('div', {}, [_('WAN device: '), E('code', {}, wanIf)]),
+                E('div', {}, [_('LAN IP: '), E('code', {}, lanIp + '/' + lanMask)])
             ]),
             E('div', {}, rows),
             saveBtn
@@ -3499,11 +3499,11 @@ return view.extend({
                 var np = document.getElementById('ns-fw-cookie').checked ? '1' : '0';
                 var nh = document.getElementById('ns-fw-https').checked ? '1' : '0';
                 var nl = document.getElementById('ns-fw-landing').value;
-                if (na !== cur.autoupgrade_fm) { changes.push(['wizard', 'default', 'autoupgrade_fm', na]); list.push('upgrade notices → ' + na); }
-                if (nc !== cur.coremark) { changes.push(['wizard', 'default', 'coremark', nc]); list.push('coremark → ' + nc); }
-                if (np !== cur.cookie_p) { changes.push(['wizard', 'default', 'persistent_cookies', np]); list.push('cookies → ' + np); }
-                if (nh !== cur.https) { changes.push(['wizard', 'default', 'https', nh]); list.push('https → ' + nh); }
-                if (nl !== cur.landing_page) { changes.push(['wizard', 'default', 'landing_page', nl]); list.push('landing → ' + nl); }
+                if (na !== cur.autoupgrade_fm) { changes.push(['wizard', 'default', 'autoupgrade_fm', na]); list.push(_('upgrade notices → ') + na); }
+                if (nc !== cur.coremark) { changes.push(['wizard', 'default', 'coremark', nc]); list.push(_('coremark → ') + nc); }
+                if (np !== cur.cookie_p) { changes.push(['wizard', 'default', 'persistent_cookies', np]); list.push(_('cookies → ') + np); }
+                if (nh !== cur.https) { changes.push(['wizard', 'default', 'https', nh]); list.push(_('https → ') + nh); }
+                if (nl !== cur.landing_page) { changes.push(['wizard', 'default', 'landing_page', nl]); list.push(_('landing → ') + nl); }
                 if (list.length === 0) { ui.addNotification(_('No changes'), _('Nothing to save.'), 'info'); return; }
                 if (!confirm(_('Save firmware settings?\n\n• ') + list.join('\n• '))) return;
                 self.nsFormSave(changes).then(function() {
@@ -3908,7 +3908,7 @@ return view.extend({
                     }
                 }, _('Cancel'));
 
-                ui.showModal(_(isNew ? _('Create script') : ('Edit: ' + (fields.name || sid))), [
+                ui.showModal(_(isNew ? _('Create script') : (_('Edit: ') + (fields.name || sid))), [
                     body,
                     E('div', { 'style': 'margin-top:14px;text-align:right;' }, [cancelBtn, saveBtn])
                 ]);
@@ -3935,7 +3935,7 @@ return view.extend({
 
         function openDetail(sid) {
             rpcDetail(sid).then(function(d) {
-                ui.showModal(_('Script detail: ' + (d.name || sid)), [
+                ui.showModal(_(_('Script detail: ') + (d.name || sid)), [
                     E('div', { 'style': 'line-height:1.7;font-size:0.92em;' }, [
                         E('div', {}, [E('strong', {}, _('Name: ')), d.name || '—']),
                         E('div', {}, [E('strong', {}, _('Category: ')), d.category || '—']),
@@ -3966,7 +3966,7 @@ return view.extend({
         }
 
         function runScript(sid, name) {
-            ui.addNotification(null, E('p', {}, _('Running ' + name + '...')), 'info');
+            ui.addNotification(null, E('p', {}, _(_('Running ') + name + '...')), 'info');
             rpcRun(sid).then(function(r) {
                 var out = (r && r.output) ? r.output : _('(no output)');
                 var rc = (r && r.exit_code != null) ? r.exit_code : '?';
@@ -3982,7 +3982,7 @@ return view.extend({
         }
 
         function deleteScript(sid, name) {
-            if (!confirm(_('Delete script "' + name + '"? Removes file and UCI entry.'))) return;
+            if (!confirm(_(_('Delete script "') + name + _('"? Removes file and UCI entry.')))) return;
             rpcDelete(sid).then(function() {
                 ui.addNotification(null, E('p', {}, _('Deleted')), 'info');
                 uci.load('quickactions').then(refreshTable);
@@ -4882,7 +4882,7 @@ return view.extend({
                 'style': 'width:100%;padding:6px 10px;border:1px solid #ccc;border-radius:4px;' });
             var portsEl = E('input', { 'type': 'text', 'value': row[2],
                 'style': 'width:100%;padding:6px 10px;border:1px solid #ccc;border-radius:4px;font-family:monospace;' });
-            ui.showModal(_('Edit VLAN ' + sid), [
+            ui.showModal(_(_('Edit VLAN ') + sid), [
                 E('div', { 'style': 'margin-bottom:10px;' }, [
                     E('label', { 'style': 'display:block;font-size:0.9em;color:#666;margin-bottom:4px;' }, _('Device')),
                     devEl
@@ -4943,7 +4943,7 @@ return view.extend({
                 'style': 'width:100%;padding:6px 10px;border:1px solid #ccc;border-radius:4px;' });
             var maskEl = E('input', { 'type': 'text', 'value': row[4],
                 'style': 'width:100%;padding:6px 10px;border:1px solid #ccc;border-radius:4px;' });
-            ui.showModal(_('Edit interface ' + sid), [
+            ui.showModal(_(_('Edit interface ') + sid), [
                 E('div', { 'style': 'margin-bottom:10px;' }, [E('label', { 'style': 'display:block;font-size:0.9em;color:#666;margin-bottom:4px;' }, _('Device')), devEl]),
                 E('div', { 'style': 'margin-bottom:10px;' }, [E('label', { 'style': 'display:block;font-size:0.9em;color:#666;margin-bottom:4px;' }, _('Protocol')), protoEl]),
                 E('div', { 'style': 'margin-bottom:10px;' }, [E('label', { 'style': 'display:block;font-size:0.9em;color:#666;margin-bottom:4px;' }, _('IP address')), ipEl]),
@@ -5125,7 +5125,7 @@ return view.extend({
             if (fmt === 'cisco' || (fmt === 'auto' && /switchport (trunk|mode)/i.test(t))) return parseCisco(t);
             if (fmt === 'edgeos' || (fmt === 'auto' && /set interfaces ethernet/.test(t))) return parseEdgeos(t);
             if (fmt === 'generic' || (fmt === 'auto' && /VLAN \d+/.test(t))) return parseGeneric(t);
-            throw new Error('Could not detect format. Please pick one manually.');
+            throw new Error(_('Could not detect format. Please pick one manually.'));
         }
 
         var parseBtn = E('button', { 'class': 'btn cbi-button',
@@ -5141,7 +5141,7 @@ return view.extend({
                         'info');
                 } catch (e) {
                     preview.style.display = 'block';
-                    preview.textContent = 'Error: ' + (e.message || e);
+                    preview.textContent = _('Error: ') + (e.message || e);
                     window._vlanImportedPlan = null;
                 }
             } }, _('Parse'));
@@ -5396,7 +5396,7 @@ return view.extend({
                             E('button', { 'class': 'btn cbi-button cbi-button-negative',
                                 'style': 'padding:2px 10px;font-size:0.85em;',
                                 'click': function() {
-                                    if (!confirm(_('Delete template "' + it.name + '"?'))) return;
+                                    if (!confirm(_(_('Delete template "') + it.name + '"?'))) return;
                                     self.callVlan('delete_template', it.name).then(function() {
                                         ui.addNotification(null, E('p', {}, _('Deleted')), 'info');
                                         loadTemplates();
@@ -5434,7 +5434,7 @@ return view.extend({
                             E('button', { 'class': 'btn cbi-button cbi-button-negative',
                                 'style': 'padding:2px 10px;font-size:0.85em;',
                                 'click': function() {
-                                    if (!confirm(_('Delete generated script "' + it.name + '"?'))) return;
+                                    if (!confirm(_(_('Delete generated script "') + it.name + '"?'))) return;
                                     self.callVlan('delete_generated', it.name).then(function() {
                                         loadGenerated();
                                     });
@@ -5532,7 +5532,7 @@ return view.extend({
                             'style': 'background:rgba(220,53,69,0.12);border:1px solid rgba(220,53,69,0.4);' +
                                      'border-radius:6px;padding:12px 16px;margin-bottom:14px;font-size:0.95em;'
                         }, [
-                            E('strong', { 'style': 'color:#c00;' }, _('⚠️ Pending auto-rollback in ' + left + 's. ')),
+                            E('strong', { 'style': 'color:#c00;' }, _(_('⚠️ Pending auto-rollback in ') + left + 's. ')),
                             _('Click Confirm to keep the changes, or do nothing to revert.'),
                             E('button', { 'class': 'btn cbi-button', 'style': 'margin-left:12px;padding:6px 16px;background:#28a745 !important;color:#fff !important;border:none;',
                                 'click': function() {
@@ -5567,7 +5567,7 @@ return view.extend({
                             E('button', { 'class': 'btn cbi-button cbi-button-action',
                                 'style': 'padding:2px 12px;font-size:0.85em;',
                                 'click': function() {
-                                    if (!confirm(_('Restore from ' + fname + '?\n\nNetwork will reload.'))) return;
+                                    if (!confirm(_(_('Restore from ') + fname + _('?\n\nNetwork will reload.')))) return;
                                     self.callVlan('restore', it.path).then(function() {
                                         ui.addNotification(null, E('p', {}, _('Restored.')), 'info');
                                         setTimeout(function() { window.location.reload(); }, 1500);
@@ -5628,7 +5628,7 @@ return view.extend({
             'click': function() {
                 bvOut.textContent = _('Loading...');
                 self.callVlan('bridge_vlan_show').then(function(r) {
-                    bvOut.textContent = (r && r.output) || '(empty)';
+                    bvOut.textContent = (r && r.output) || _('(empty)');
                 });
             } }, _('Load bridge vlan show'));
 
@@ -5637,7 +5637,7 @@ return view.extend({
         kernelLoad.then(function(ifs) {
             ifSel.innerHTML = '';
             ifs.forEach(function(i) {
-                var label = i.name + (i.up ? ' (up)' : '');
+                var label = i.name + (i.up ? _(' (up)') : '');
                 ifSel.appendChild(E('option', { 'value': i.name }, label));
             });
             if (!ifs.length) ifSel.appendChild(E('option', { 'value': '' }, _('no interfaces')));
@@ -5666,7 +5666,7 @@ return view.extend({
             });
             var list = preferred.length ? preferred : ifs;
             list.forEach(function(i) {
-                var label = i.name + (i.up ? ' (up)' : '');
+                var label = i.name + (i.up ? _(' (up)') : '');
                 srcSel.appendChild(E('option', { 'value': i.name }, label));
             });
             if (!list.length) srcSel.appendChild(E('option', { 'value': '' }, _('no interfaces')));
@@ -5680,7 +5680,7 @@ return view.extend({
                 var ip = ipEl.value.trim();
                 if (!iface) { pingOut.textContent = _('No interface selected.'); return; }
                 if (!ip) { pingOut.textContent = _('Enter a target IP or host.'); return; }
-                pingOut.textContent = 'Pinging ' + ip + ' through ' + iface + '...';
+                pingOut.textContent = _('Pinging ') + ip + _(' through ') + iface + '...';
                 self.callVlan('ping_test', iface, ip).then(function(r) {
                     var out = (r && r.output) ? r.output : '';
                     var rc = (r && r.exit_code != null) ? r.exit_code : '?';
@@ -5739,8 +5739,8 @@ return view.extend({
             return rpcStatus().then(function(r) {
                 var on = String(r.enabled) === '1';
                 var backup = String(r.on_backup) === '1';
-                statusLabel.textContent = 'STATUS: ' + (on ? 'ON' : _('OFF')) +
-                    '   ·   MODE: ' + (backup ? _('BACKUP') : _('PRIMARY'));
+                statusLabel.textContent = _('STATUS: ') + (on ? _('ON') : _('OFF')) +
+                    _('   ·   MODE: ') + (backup ? _('BACKUP') : _('PRIMARY'));
                 statusLabel.style.background = on
                     ? (backup ? 'rgba(255,193,7,0.25)' : 'rgba(40,167,69,0.2)')
                     : 'rgba(220,53,69,0.2)';
@@ -5755,7 +5755,7 @@ return view.extend({
             rpcAction(action).then(function(r) {
                 ui.addNotification(null, E('pre', {
                     'style': 'margin:0;white-space:pre-wrap;font-size:0.85em;'
-                }, (r && r.output) || '(done)'), 'info');
+                }, (r && r.output) || _('(done)')), 'info');
                 refreshStatus();
             }).catch(function(err) {
                 ui.addNotification(null, E('p', {}, _('Failed: ') + (err.message || err)), 'danger');
@@ -5923,7 +5923,7 @@ return view.extend({
         var infoBar = E('div', {
             'style': 'background:rgba(30,144,255,0.08);border:1px solid rgba(30,144,255,0.2);border-radius:6px;padding:12px 16px;margin-bottom:18px;font-size:0.9em;line-height:1.55;' }, [
             E('strong', {}, _('Failover — lightweight mwan3 alternative. ')),
-            _('Cron-driven ping tests run once per minute through the primary interface. ' +
+            _(_('Cron-driven ping tests run once per minute through the primary interface. ') +
               'On repeated failure, the conntrack table is flushed so the kernel falls back to the backup ' +
               'with the lowest route metric. Zero background RAM when idle — a single ping run per minute.')
         ]);
@@ -6117,7 +6117,7 @@ return view.extend({
             });
         });
 
-        ui.showModal(_('Edit wireless: ' + (ssid || sid)), [
+        ui.showModal(_(_('Edit wireless: ') + (ssid || sid)), [
             body,
             E('div', { 'style':'margin-top:16px;text-align:right;' }, [cancelBtn, saveBtn, applyBtn])
         ]);
@@ -6125,7 +6125,7 @@ return view.extend({
 
     renderConfigForm: function() {
         var self = this;
-        var m = new form.Map('quickactions', 'Quick Actions Configuration', 'Manage all sections. Use Order field to control sequence (lower = first).');
+        var m = new form.Map('quickactions', _('Quick Actions Configuration'), _('Manage all sections. Use Order field to control sequence (lower = first).'));
         var s = m.section(form.NamedSection, 'global', 'settings', _('Global Settings'));
         s.anonymous = true;
         var o = s.option(form.Value, 'poll_interval', _('Polling Interval (seconds)'));

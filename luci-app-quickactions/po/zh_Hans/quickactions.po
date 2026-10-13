@@ -3611,3 +3611,162 @@ msgstr "⚠️ 混合内容拦截："
 
 msgid "⚠️ Pending auto-rollback in "
 msgstr "⚠️ 将在以下时间后自动回滚："
+
+msgid "2.4 GHz"
+msgstr "2.4 GHz"
+
+msgid "5 GHz"
+msgstr "5 GHz"
+
+msgid "6 GHz"
+msgstr "6 GHz"
+
+msgid " pending change"
+msgstr " 项待处理更改"
+
+msgid " in memory (not committed)"
+msgstr "（暂存于内存，未提交）"
+
+msgid "\n... and "
+msgstr "\n…以及 "
+
+msgid "[exit code "
+msgstr "[退出码 "
+
+msgid " — exit "
+msgstr " — 退出码 "
+
+msgid ") → AP: "
+msgstr "）→ AP："
+
+msgid "OWE ("
+msgstr "OWE（"
+
+msgid "WPA2-PSK/WPA3-SAE "
+msgstr "WPA2-PSK/WPA3-SAE "
+
+msgid "WPA-PSK/WPA2-PSK "
+msgstr "WPA-PSK/WPA2-PSK "
+
+msgid "⚠️ WARNING: Enable root auto-login?\n\nThis changes ttyd command to /bin/sh. Anyone who can reach port "
+msgstr "⚠️ 警告：启用 root 自动登录？\n\n这会将 ttyd 命令改为 /bin/sh。任何能访问端口 "
+
+msgid " gets a root shell without credentials.\n\nEnsure ttyd is bound to loopback or LAN-only and your network is trusted.\n\nProceed?"
+msgstr " 的人都能免密获得 root shell。\n\n请确保 ttyd 只绑定 loopback 或仅监听 LAN，且网络可信。\n\n是否继续？"
+
+msgid "New LAN IP: "
+msgstr "新 LAN IP："
+
+msgid "Redirecting in "
+msgstr "将于 "
+
+msgid " seconds..."
+msgstr " 秒后跳转…"
+
+msgid "Current mode: "
+msgstr "当前模式："
+
+msgid "WAN device: "
+msgstr "WAN 设备："
+
+msgid "LAN IP: "
+msgstr "LAN IP："
+
+msgid "Mode → "
+msgstr "模式 → "
+
+msgid "WAN device → "
+msgstr "WAN 设备 → "
+
+msgid "setlan → "
+msgstr "setlan → "
+
+msgid "WAN IP → "
+msgstr "WAN IP → "
+
+msgid "LAN mask → "
+msgstr "LAN 掩码 → "
+
+msgid "LAN GW → "
+msgstr "LAN 网关 → "
+
+msgid "LAN proto → "
+msgstr "LAN 协议 → "
+
+msgid "IPv6 → "
+msgstr "IPv6 → "
+
+msgid "LAN DHCP → "
+msgstr "LAN DHCP → "
+
+msgid "DNS notify → "
+msgstr "DNS 通告 → "
+
+msgid "DNS push → "
+msgstr "DNS 推送 → "
+
+msgid "SYN-flood → "
+msgstr "SYN-flood → "
+
+msgid "upgrade notices → "
+msgstr "升级提示 → "
+
+msgid "coremark → "
+msgstr "coremark → "
+
+msgid "cookies → "
+msgstr "cookies → "
+
+msgid "https → "
+msgstr "https → "
+
+msgid "landing → "
+msgstr "landing → "
+
+msgid "Edit: "
+msgstr "编辑："
+
+msgid "\"? Removes file and UCI entry."
+msgstr "\"？将删除文件和对应 UCI 条目。"
+
+msgid "?\n\nNetwork will reload."
+msgstr "？\n\n网络将重载。"
+
+msgid "Pinging "
+msgstr "正在 Ping "
+
+msgid " through "
+msgstr "，经由 "
+
+msgid "No output. Command: ping -I "
+msgstr "无输出。命令：ping -I "
+
+msgid "Exit code: "
+msgstr "退出码："
+
+msgid "Common causes:\n"
+msgstr "常见原因：\n"
+
+msgid "- Interface has no route to target\n"
+msgstr "- 接口没有到目标的路由\n"
+
+msgid "- Interface is down\n"
+msgstr "- 接口已关闭\n"
+
+msgid "- Wrong device (use pppoe-wan for PPPoE WAN, not eth1)"
+msgstr "- 设备错误（PPPoE WAN 应使用 pppoe-wan，而非 eth1）"
+
+msgid "STATUS: "
+msgstr "状态："
+
+msgid "   ·   MODE: "
+msgstr "   ·   模式："
+
+msgid "(empty)"
+msgstr "（空）"
+
+msgid "(done)"
+msgstr "（完成）"
+
+msgid " (up)"
+msgstr "（已启用）"
