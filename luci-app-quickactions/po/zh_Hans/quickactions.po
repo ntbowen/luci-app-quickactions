@@ -3191,3 +3191,423 @@ msgstr "🛡️ 客户端隔离"
 msgid "🪵 Inter-VLAN Routing (Router-on-a-Stick)"
 msgstr "🪵 VLAN 间路由（单臂路由）"
 
+
+msgid "\n\nBackup will be taken first."
+msgstr "\n\n将先自动创建备份。"
+
+msgid "\n\nCommand:\n"
+msgstr "\n\n命令：\n"
+
+msgid "\n\nProceed?"
+msgstr "\n\n是否继续？"
+
+msgid "\n\nThis commits and applies everything, not just this page."
+msgstr "\n\n这会提交并应用所有更改，不只是本页面。"
+
+msgid " CLI"
+msgstr " CLI"
+
+msgid " VLAN(s) parsed. Click Apply to write them."
+msgstr " 个 VLAN。点击\"应用\"写入配置。"
+
+msgid " VLAN(s) to this router? Snapshot will be taken first."
+msgstr " 个 VLAN 到本路由器？将先创建快照。"
+
+msgid " applied. ttyd restarted."
+msgstr " 已应用。ttyd 已重启。"
+
+msgid " change(s) applying..."
+msgstr " 项变更正在应用…"
+
+msgid " change(s)..."
+msgstr " 项变更…"
+
+msgid " dependencies..."
+msgstr " 的依赖…"
+
+msgid " is running..."
+msgstr " 正在运行…"
+
+msgid " moved "
+msgstr " 移动了 "
+
+msgid " · exit "
+msgstr " · 退出码 "
+
+msgid " — reloading..."
+msgstr " — 正在重载…"
+
+msgid "\" to service \""
+msgstr "\" 到服务 \""
+
+msgid "\"?\n\nCommand:\n"
+msgstr "\"？\n\n命令：\n"
+
+msgid "\"?\n\nFinish configuration in WAN Settings."
+msgstr "\"？\n\n请在 WAN 设置中完成配置。"
+
+msgid "\"? Internet may drop briefly."
+msgstr "\" 重新配置 WAN 为 PPPoE？网络可能短暂中断。"
+
+msgid "%s: <span style=\"color:green\">%s</span>"
+msgstr "%s：<span style=\"color:green\">%s</span>"
+
+msgid "%s: <span style=\"color:orange\">%s</span>"
+msgstr "%s：<span style=\"color:orange\">%s</span>"
+
+msgid "%s: <span style=\"color:red\">%s</span>"
+msgstr "%s：<span style=\"color:red\">%s</span>"
+
+msgid ").\nProceed?"
+msgstr ")。\n是否继续？"
+
+msgid ", encryption: "
+msgstr "，加密方式："
+
+msgid ". Lower = fewer logs."
+msgstr "。数值越低日志越少。"
+
+msgid ". Metadata in "
+msgstr "。元数据位于 "
+
+msgid "/etc/config/quickactions"
+msgstr "/etc/config/quickactions"
+
+msgid "/etc/quickactions/scripts/"
+msgstr "/etc/quickactions/scripts/"
+
+msgid "/interface bridge vlan\nadd bridge=bridge1 tagged=ether1,ether2 untagged=ether3 vlan-ids=10"
+msgstr "/interface bridge vlan\nadd bridge=bridge1 tagged=ether1,ether2 untagged=ether3 vlan-ids=10"
+
+msgid "Access port: "
+msgstr "Access 端口："
+
+msgid "Add this cron entry?\n\n"
+msgstr "添加此 cron 条目？\n\n"
+
+msgid "Already using \""
+msgstr "正在使用 \""
+
+msgid "Apply "
+msgstr "应用 "
+
+msgid "Apply \""
+msgstr "应用 \""
+
+msgid "Apply ALL pending changes system-wide?\n\n"
+msgstr "在系统范围内应用全部待处理更改？\n\n"
+
+msgid "Apply failed: "
+msgstr "应用失败："
+
+msgid "Apply this VLAN plan to the router?\n\nA snapshot will be taken first. Network will reload."
+msgstr "将此 VLAN 方案应用到路由器？\n\n将先创建快照，随后重载网络。"
+
+msgid "Apply wireless changes? SSID: "
+msgstr "应用无线更改？SSID："
+
+msgid "Apply with 90-second rollback?\n\nIf you lose access, the network will auto-restore after 90 seconds."
+msgstr "带 90 秒回滚应用？\n\n如果失去连接，网络将在 90 秒后自动恢复。"
+
+msgid "Applying \""
+msgstr "正在应用 \""
+
+msgid "Arguments: "
+msgstr "参数："
+
+msgid "Auto-login is already active. Terminal runs "
+msgstr "自动登录已启用。终端运行 "
+
+msgid "Category: "
+msgstr "分类："
+
+msgid "Change log level to "
+msgstr "将日志级别改为 "
+
+msgid "Clear cache:"
+msgstr "清除缓存："
+
+msgid "Committing "
+msgstr "正在提交 "
+
+msgid "Confirm: "
+msgstr "确认："
+
+msgid "Cron-driven ping tests run once per minute through the primary interface. "
+msgstr "cron 驱动的 ping 测试每分钟通过主接口运行一次。"
+
+msgid "Current: "
+msgstr "当前："
+
+msgid "Custom"
+msgstr "自定义"
+
+msgid "Delete failed: "
+msgstr "删除失败："
+
+msgid "Delete generated script \""
+msgstr "删除已生成的脚本 \""
+
+msgid "Delete script \""
+msgstr "删除脚本 \""
+
+msgid "Delete shortcut \""
+msgstr "删除快捷方式 \""
+
+msgid "Delete template \""
+msgstr "删除模板 \""
+
+msgid "Dependencies: "
+msgstr "依赖："
+
+msgid "Device: "
+msgstr "设备："
+
+msgid "Download failed: "
+msgstr "下载失败："
+
+msgid "Downloading: "
+msgstr "正在下载："
+
+msgid "Edit SSID: "
+msgstr "编辑 SSID："
+
+msgid "Edit VLAN "
+msgstr "编辑 VLAN "
+
+msgid "Edit interface "
+msgstr "编辑接口 "
+
+msgid "Edit wireless: "
+msgstr "编辑无线："
+
+msgid "Enabled: "
+msgstr "启用状态："
+
+msgid "Error: "
+msgstr "错误："
+
+msgid "Failed: "
+msgstr "失败："
+
+msgid "Failover — lightweight mwan3 alternative. "
+msgstr "故障切换 —— 轻量级 mwan3 替代方案。"
+
+msgid "Fetching "
+msgstr "正在获取 "
+
+msgid "Force reconnect?\n\nThis kills all ttyd sessions and restarts the service. Any open terminal in another tab will be disconnected."
+msgstr "强制重连？\n\n这将结束所有 ttyd 会话并重启服务。其他标签页中打开的终端将断开。"
+
+msgid "Form error: "
+msgstr "表单错误："
+
+msgid "Generated "
+msgstr "已生成 "
+
+msgid "Generated CLI examples "
+msgstr "已生成 CLI 示例 "
+
+msgid "Generated CLI for "
+msgstr "已生成 CLI（"
+
+msgid "Generator: "
+msgstr "生成器："
+
+msgid "Guest WiFi form error: "
+msgstr "访客 WiFi 表单错误："
+
+msgid "Hostname: "
+msgstr "主机名："
+
+msgid "Hotplug error: "
+msgstr "Hotplug 错误："
+
+msgid "Interface list failed: "
+msgstr "接口列表获取失败："
+
+msgid "IoT"
+msgstr "IoT"
+
+msgid "Kernel: "
+msgstr "内核："
+
+msgid "Language Switcher: "
+msgstr "语言切换："
+
+msgid "List failed: "
+msgstr "列表获取失败："
+
+msgid "Load failed: "
+msgstr "加载失败："
+
+msgid "Loading "
+msgstr "正在加载 "
+
+msgid "Log level set to "
+msgstr "日志级别已设为 "
+
+msgid "Memory: "
+msgstr "内存："
+
+msgid "Mode: "
+msgstr "模式："
+
+msgid "Name: "
+msgstr "名称："
+
+msgid "Network Setup error: "
+msgstr "网络设置错误："
+
+msgid "OWE"
+msgstr "OWE"
+
+msgid "Path: "
+msgstr "路径："
+
+msgid "Permissions: "
+msgstr "权限："
+
+msgid "Preset installed: "
+msgstr "预设已安装："
+
+msgid "Reconfigure WAN as PPPoE with user \""
+msgstr "以用户 \""
+
+msgid "Resolved: "
+msgstr "已解析："
+
+msgid "Resource mode: "
+msgstr "资源模式："
+
+msgid "Restart failed: "
+msgstr "重启失败："
+
+msgid "Restore from "
+msgstr "从以下备份恢复："
+
+msgid "Run failed: "
+msgstr "运行失败："
+
+msgid "Run this command?\n\n"
+msgstr "运行此命令？\n\n"
+
+msgid "Running "
+msgstr "正在运行 "
+
+msgid "Save WAN changes?\n\n• "
+msgstr "保存 WAN 更改？\n\n• "
+
+msgid "Save failed: "
+msgstr "保存失败："
+
+msgid "Save firmware settings?\n\n• "
+msgstr "保存固件设置？\n\n• "
+
+msgid "Script detail: "
+msgstr "脚本详情："
+
+msgid "Scripts "
+msgstr "脚本 "
+
+msgid "Size: "
+msgstr "大小："
+
+msgid "Smart mode: "
+msgstr "智能模式："
+
+msgid "Snapshot saved: "
+msgstr "快照已保存："
+
+msgid "Switch mode to \""
+msgstr "切换模式到 \""
+
+msgid "Switching to "
+msgstr "正在切换到 "
+
+msgid "System"
+msgstr "系统"
+
+msgid "Tagged packet: "
+msgstr "Tagged 报文："
+
+msgid "Task Plan error: "
+msgstr "任务计划错误："
+
+msgid "Terminal already requires login ("
+msgstr "终端已要求登录（"
+
+msgid "Theme Switcher: "
+msgstr "主题切换："
+
+msgid "Timeout: "
+msgstr "超时："
+
+msgid "Trunk port: "
+msgstr "Trunk 端口："
+
+msgid "VLAN ID: "
+msgstr "VLAN ID："
+
+msgid "VLAN detect failed: "
+msgstr "VLAN 检测失败："
+
+msgid "WAN Settings — "
+msgstr "WAN 设置 —— "
+
+msgid "WARNING: APs currently have DIFFERENT passwords. Saving will overwrite all of them with the new one.\n\nContinue?"
+msgstr "警告：各 AP 当前密码不一致。保存将用新密码覆盖所有 AP。\n\n是否继续？"
+
+msgid "WPA-PSK"
+msgstr "WPA-PSK"
+
+msgid "WPA/WPA2"
+msgstr "WPA/WPA2"
+
+msgid "WPA2-PSK"
+msgstr "WPA2-PSK"
+
+msgid "WPA3-SAE"
+msgstr "WPA3-SAE"
+
+msgid "Warning: high-risk operation ("
+msgstr "警告：高风险操作（"
+
+msgid "You do not tag the SSID directly — you attach the wireless interface to the VLAN\\'s logical network."
+msgstr "不能直接给 SSID 打标签——应将无线接口关联到该 VLAN 的逻辑网络。"
+
+msgid "Your router: "
+msgstr "本路由器："
+
+msgid "chmod 755 ok"
+msgstr "chmod 755 ok"
+
+msgid "echo hello"
+msgstr "echo hello"
+
+msgid "https://google.com"
+msgstr "https://google.com"
+
+msgid "manual"
+msgstr "manual"
+
+msgid "template-name"
+msgstr "template-name"
+
+msgid "ttyd error: "
+msgstr "ttyd 错误："
+
+msgid "ttyd is configured with SSL but you access LuCI over HTTP. The browser will refuse to load the terminal. "
+msgstr "ttyd 配置了 SSL，但你正通过 HTTP 访问 LuCI，浏览器将拒绝加载终端。"
+
+msgid "— create, edit, run, and manage shell scripts. Files live in "
+msgstr "——创建、编辑、运行和管理 shell 脚本。文件位于 "
+
+msgid "⚠️ Connect via a LAN port you will NOT modify. "
+msgstr "⚠️ 请通过你不会修改的 LAN 端口连接。"
+
+msgid "⚠️ Mixed content block: "
+msgstr "⚠️ 混合内容拦截："
+
+msgid "⚠️ Pending auto-rollback in "
+msgstr "⚠️ 将在以下时间后自动回滚："
