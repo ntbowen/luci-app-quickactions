@@ -1313,6 +1313,7 @@ return view.extend({
         return Promise.all([
             uci.load('quickactions').catch(function(){}),
             uci.load('system').catch(function(){}),
+            uci.load('luci').catch(function(){}),
             uci.load('wireless').catch(function(){}),
             uci.load('network').catch(function(){}),
             uci.load('guestwifi').catch(function(){})
@@ -1333,13 +1334,10 @@ return view.extend({
             });
             return self.fetchThemeList().then(function(themes) {
                 self.installedThemes = themes || [];
-                return self.fetchLanguageList().then(function(langs) {
-                    self.installedLanguages = langs || [];
-                    return Promise.all([
-                        uci.load('luci').then(function() { return uci.sections('luci', 'command'); }).catch(function(){ return []; }),
-                        self.callInitStatus().catch(function(){ return {}; })
-                    ]);
-                });
+                return Promise.all([
+                    uci.load('luci').then(function() { return uci.sections('luci', 'command'); }).catch(function(){ return []; }),
+                    self.callInitStatus().catch(function(){ return {}; })
+                ]);
             });
         });
     },
@@ -1392,53 +1390,24 @@ return view.extend({
     },
 
     fetchThemeList: function() {
-        var self = this;
-        // Multi-source theme detection (four independent methods)
-        var sh = 'ls -1 /www/luci-static/ 2>/dev/null; ' +
-                 'echo "---"; ' +
-                 'ls -1 /usr/lib/opkg/info/ 2>/dev/null | grep "^luci-theme-"; ' +
-                 'echo "---"; ' +
-                 'opkg list-installed 2>/dev/null | awk "/^luci-theme-/ {print \$1}"; ' +
-                 'apk list -I 2>/dev/null | grep -o "^luci-theme-[^ ]*"';
-
-        return this.callSystemCommand('/bin/sh', ['-c', sh]).then(function(r) {
-            var seen = {}, themes = [];
-            (r.stdout || '').split('\n').forEach(function(line) {
-                line = line.trim();
-                if (!line || line === '---') return;
-                var name = line
-                    .replace(/^luci-theme-/, '')
-                    .replace(/\.(list|control)$/, '')
-                    .trim();
-                if (['resources', 'fonts', 'index.css', 'index.css.gz', 'menu', 'loading.svg'].indexOf(name) !== -1) return;
-                if (/^[a-zA-Z0-9_\-]+$/.test(name) === false) return;
-                if (name.length < 2 || name.length > 32) return;
-                if (seen[name]) return;
-                seen[name] = 1;
-                themes.push(name);
-            });
-            return themes;
-        }).catch(function() { return []; });
+        // Same source as System -> Language & Style: luci.themes maps
+        // display name -> mediaurlbase, registered by each luci-theme-* package.
+        var map = uci.get('luci', 'themes') || {};
+        var list = [];
+        Object.keys(map).sort().forEach(function(name) {
+            var url = map[name];
+            if (typeof url === 'string' && url.indexOf('/luci-static/') === 0)
+                list.push({ name: name, url: url });
+        });
+        return Promise.resolve(list);
     },
 
-    fetchLanguageList: function() {
-        var sh = "ls -1 /usr/lib/lua/luci/i18n/ 2>/dev/null | grep -E '^base\..*\.lmo$' | sed 's/^base\.//; s/\.lmo$//' | sort -u";
-        return this.callSystemCommand('/bin/sh', ['-c', sh]).then(function(r) {
-            var list = [];
-            (r.stdout || '').split('\n').forEach(function(line) {
-                line = line.trim();
-                if (line && /^[a-zA-Z_]+$/.test(line)) list.push(line);
-            });
-            return list;
-        }).catch(function() { return []; });
-    },
-
-    handleThemeSwitch: function(themeKey) {
+    handleThemeSwitch: function(themeName, urlbase) {
         uci.load('luci').then(function() {
             var cur = uci.get('luci', 'main', 'mediaurlbase');
-            var nb = '/luci-static/' + themeKey;
-            if (cur === nb) { ui.addNotification(_('Theme'), _('Already using "') + themeKey + '".', 'info'); return; }
-            ui.addNotification(_('Theme'), _('Applying "') + themeKey + '"...', 'info');
+            var nb = urlbase || ('/luci-static/' + themeName.toLowerCase());
+            if (cur === nb) { ui.addNotification(_('Theme'), _('Already using "') + themeName + '".', 'info'); return; }
+            ui.addNotification(_('Theme'), _('Applying "') + themeName + '"...', 'info');
             uci.set('luci', 'main', 'mediaurlbase', nb);
             uci.save().then(function() { return ui.changes.apply(false); }).then(function() { setTimeout(function() { window.location.reload(); }, 500); })
               .catch(function(err) { ui.addNotification(_('Theme Error'), (err && err.message) ? err.message : String(err), 'danger'); });
@@ -1649,31 +1618,14 @@ return view.extend({
             } }, _('Diagnose')));
         }
         else this.installedThemes.forEach(function(t) {
-            themeBar.appendChild(E('button', { 'class': 'btn cbi-button cbi-button-neutral', 'style': 'padding:4px 12px;text-transform:capitalize;font-weight:bold;', 'click': function() { self.handleThemeSwitch(t); } }, t));
+            themeBar.appendChild(E('button', { 'class': 'btn cbi-button cbi-button-neutral', 'style': 'padding:4px 12px;font-weight:bold;', 'click': function() { self.handleThemeSwitch(t.name, t.url); } }, t.name));
         });
         var langBar = E('div', { 'style': 'background:rgba(0,0,0,0.04);padding:12px 14px;border-radius:8px;margin-bottom:20px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;' }, [E('strong', { 'style': 'min-width:130px;' }, _('Language Switcher: '))]);
-        var LANG_NAMES = {
-            'en': 'English', 'bn': '\u09ac\u09be\u0982\u09b2\u09be', 'bn_BD': '\u09ac\u09be\u0982\u09b2\u09be',
-            'zh_Hans': '\u7b80\u4f53\u4e2d\u6587', 'zh_Hant': '\u7e41\u9ad4\u4e2d\u6587',
-            'ar': '\u0627\u0644\u0639\u0631\u0628\u064a\u0629', 'cs': '\u010ce\u0161tina', 'da': 'Dansk',
-            'de': 'Deutsch', 'el': '\u0395\u03bb\u03bb\u03b7\u03bd\u03b9\u03ba\u03ac', 'es': 'Espa\u00f1ol',
-            'fa': '\u0641\u0627\u0631\u0633\u06cc', 'fi': 'Suomi', 'fil': 'Filipino',
-            'fr': 'Fran\u00e7ais', 'he': '\u05e2\u05d1\u05e8\u05d9\u05ea', 'hi': '\u0939\u093f\u0928\u094d\u0926\u0940',
-            'hu': 'Magyar', 'it': 'Italiano', 'ja': '\u65e5\u672c\u8a9e',
-            'ko': '\ud55c\uad6d\uc5b4', 'ms': 'Bahasa Melayu', 'nb_NO': 'Norsk Bokm\u00e5l',
-            'nl': 'Nederlands', 'pl': 'Polski', 'pt': 'Portugu\u00eas',
-            'pt_BR': 'Portugu\u00eas (BR)', 'ro': 'Rom\u00e2n\u0103', 'ru': '\u0420\u0443\u0441\u0441\u043a\u0438\u0439',
-            'sk': 'Sloven\u010dina', 'sv': 'Svenska', 'tr': 'T\u00fcrk\u00e7e',
-            'uk': '\u0423\u043a\u0440\u0430\u0457\u043d\u0441\u044c\u043a\u0430', 'vi': 'Ti\u1ebfng Vi\u1ec7t'
-        };
-        var langs = (self.installedLanguages && self.installedLanguages.length)
-            ? self.installedLanguages.slice()
-            : ['en', 'bn_BD'];
-        if (langs.indexOf('en') === -1) langs.unshift('en');
-        langs.forEach(function(code) {
-            var label = LANG_NAMES[code] || code;
+        var installedLangs = uci.get('luci', 'languages') || {};
+        var langOpts = Object.assign({ 'auto': _('auto'), 'en': 'English' }, installedLangs);
+        Object.keys(langOpts).filter(function(k){ return k.charAt(0) !== '.'; }).forEach(function(code) {
             var active = (currentLang === code);
-            var btn = E('button', { 'class': 'btn cbi-button ' + (active ? 'cbi-button-action important' : 'cbi-button-neutral'), 'style': 'padding:4px 14px;font-weight:bold;', 'click': function() { self.handleLanguageSwitch(code); } }, label);
+            var btn = E('button', { 'class': 'btn cbi-button ' + (active ? 'cbi-button-action important' : 'cbi-button-neutral'), 'style': 'padding:4px 14px;font-weight:bold;', 'click': function() { self.handleLanguageSwitch(code); } }, langOpts[code] || code);
             langBar.appendChild(btn);
         });
         var grid = E('div', { 'id': 'quickactions-grid-container', 'style': 'display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;' });
